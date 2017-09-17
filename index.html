@@ -1,18 +1,102 @@
 <html>
   <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/white.css">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
   </head>
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>Slide 1</section>
-        <section>Slide 2</section>
+        <section>
+          <p>Piotr Leniec</p>
+          <img src="img/piotr-leniec.jpg" width="200">
+          <p>leniec.com</p>
+        </section>
+        <section>
+          Dlaczego JavaScript jest wolniejszy od C?
+        </section>
+        <section>
+          asm.js
+        </section>
+        <section>
+          <ul>
+            <li>tylko numeryczne typy proste </li>
+            <li>tylko operacje arytmetyczne</li>
+            <li>operacje na pamięci zarządzanej przez asm.js</li>
+            <li>wywoływanie funkcji JavaScriptowych</li>
+          </ul>
+        </section>
+        <section>
+          <pre><code class="js">
+function strlen(ptr) {
+  ptr = ptr | 0;
+  var curr = 0;
+  curr = ptr;
+  while(MEM8[curr] | 0 != 0) {
+    curr = (curr + 1) | 0;
+  }
+  return (curr - ptr) | 0;
+}
+          </code></pre>
+        </section>
+        <section>
+          <pre><code class="js">
+function increment(ptr) {
+  p = p | 0
+  MEMU32[ptr>>2] = (MEMU32[ptr>>2] + 1) | 0
+}
+          </code></pre>
+        </section>
+        <section>
+          <img src="img/emscripten.png">
+        </section>
+        <section>
+          <img src="img/benchmark.png">
+        </section>
+        <section>
+          WebAssembly
+        </section>
+        <section>
+          <pre><code>
+20 00
+50
+04 7e
+42 01
+05
+20 00
+20 00
+42 01
+7d
+10 00
+7e
+0b
+          </code></pre>
+        </section>
+        <section>
+          <pre><code>
+(module
+  (func (param $lhs i32) (param $rhs i32) (result i32)
+    get_local $lhs
+    get_local $rhs
+    i32.add))
+          </code></pre>
+        </section>
       </div>
     </div>
     <script src="js/reveal.js"></script>
+    <script src="lib/js/head.min.js"></script>
     <script>
-      Reveal.initialize()
+      Reveal.initialize({
+        transition: 'none',
+        dependencies: [
+          {
+            src: 'plugin/highlight/highlight.js',
+            async: true,
+            callback: function() { hljs.initHighlightingOnLoad(); }
+          }
+        ]
+      })
     </script>
   </body>
 </html>
